@@ -14,6 +14,8 @@
                 <option disabled selected>Filter By Typing</option>
                 <option v-for="company in companies" :key="company.id" :value="company.Symbol">{{ company.Symbol + ' - ' + company['Company Name']}}</option>
             </select>
+
+            <error-message :errors="errors" v-if="errors.company_symbol" />
           </div>
 
         </div>
@@ -22,22 +24,30 @@
           <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
           <div class="mt-2">
             <input id="email" name="email" type="email" autocomplete="email" placeholder="Enter email address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="data.email" required>
+
+            <error-message :errors="errors" v-if="errors.email" />
           </div>
         </div>
 
         <div class="sm:col-span-3">
           <label for="start-date" class="block text-sm font-medium leading-6 text-gray-900">Start Date</label>
           <div class="mt-2">
-            <input type="date" name="start-date" id="start-date" autocomplete="start-date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="data.start_date" required>
+            <VueDatePicker v-model="data.start_date" :format="format" :state="errors.start_date ? false : null" auto-apply  />
+
+            <error-message :errors="errors" v-if="errors.start_date" />
           </div>
         </div>
 
         <div class="sm:col-span-3">
           <label for="end-date" class="block text-sm font-medium leading-6 text-gray-900">End Date</label>
           <div class="mt-2">
-            <input type="date" name="end-date" id="end-date" autocomplete="end-date" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="data.end_date" required>
+            <VueDatePicker v-model="data.end_date" :format="format" :state="errors.end_date ? false : null" auto-apply  />
+
+            <error-message :errors="errors" v-if="errors.end_date" />
           </div>
         </div>
+
+        
       </div>
     </div>
   </div>
@@ -50,12 +60,16 @@
 
 </template>
 
-
 <script>
     import { mapActions, mapGetters } from 'vuex'
+    import ErrorMessage from '../components/ErrorMessage'
+    import api from '../api'
 
     export default {
         name: 'FormComponent',
+        components: {
+            ErrorMessage
+        },
         data() {
             return {
                 data: {
@@ -64,7 +78,13 @@
                     start_date: '',
                     end_date: ''
                 },
-                errors: []
+                errors: {
+                    company_symbol: '',
+                    email: '',
+                    start_date: '',
+                    end_date: ''
+                },
+                format: 'Y-MM-dd'
             }
         },
         computed: {
@@ -78,7 +98,16 @@
         methods: {
             ...mapActions({
                 fetchCompanies: 'company/fetchCompanies'
-            })
+            }),
+            submit() {
+                api.post('/api/company', this.data)
+                    .then(response => {
+                        console.log(response)
+                    })
+                    .catch(error => {
+                        this.errors = error.response.data.errors
+                    })
+            }
         }
     }
 </script>
