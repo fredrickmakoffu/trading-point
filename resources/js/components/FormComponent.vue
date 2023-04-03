@@ -15,7 +15,7 @@
                         <div class="mt-2">
                             <select id="company" name="company" autocomplete="company-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="data.company_symbol" required>
                                 <option disabled selected>Filter By Typing</option>
-                                <option v-for="company in companies" :key="company.id" :value="company.Symbol">{{ company.Symbol + ' - ' + company['Company Name']}}</option>
+                                <option v-for="company in companies" :key="company.id" :value="company.Symbol + '-' + company['Company Name']">{{ company.Symbol + ' - ' + company['Company Name']}}</option>
                             </select>
 
                             <error-message :errors="errors.company_symbol" v-if="errors.company_symbol" />
@@ -139,6 +139,11 @@
             }),
             submit() {
                 this.alert.loading = true
+                let company_symbol = this.data.company_symbol.split('-')[0]
+                let company_name = this.data.company_symbol.split('-')[1]
+                
+                this.data.company_symbol = company_symbol
+                this.data.company_name = company_name
                 
                 // unset historical data
                 this.historical_data = []

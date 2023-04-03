@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Resources\CompanyResource;
 use App\Http\Requests\Company\StoreRequest;
 use Illuminate\Support\Facades\Http;
+use App\Jobs\EmailUser;
 
 class CompanyController extends Controller
 {
@@ -28,7 +29,10 @@ class CompanyController extends Controller
             ? $response->json()
             : $response->throw();
 
-        // dispatch(new \App\Jobs\EmailUser($data));
+        dispatch(new EmailUser($request->validated()['email'], [
+            'subject' => $request->validated()['company_name'],
+            'body' => 'From '. $request->validated()['start_date'] . ' to ' . $request->validated()['end_date']
+        ]));
 
         return new CompanyResource($data);
     }

@@ -26,6 +26,7 @@ class StoreRequest extends FormRequest
             'end_date' => 'required|date|after:start_date',
             'email' => 'required|email',
             'company_symbol' => 'required|string',
+            'company_name' => 'required|string'
         ];
     }
 }
