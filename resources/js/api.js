@@ -29,13 +29,11 @@ export default {
     post: async (url, data) =>  {
         return fetch(url, {
                 method: 'POST',
-                body: data,
+                body: JSON.stringify(data),
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
             .then(response => response.json())
-            .then(data => data)
-            .catch(error => console.log(error))
     }
 }

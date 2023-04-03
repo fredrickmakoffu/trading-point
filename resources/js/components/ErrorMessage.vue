@@ -1,6 +1,6 @@
 <template>
     <small class="italic text-xs text-rose-700" v-for="(error, index) in errors" :key="index"> 
-        <p class="mt-1 mb-0"> &bull; {{ error[index] }} </p>
+        <p class="mt-1 mb-0"> &bull; {{ error }} </p>
     </small>
 </template>
 

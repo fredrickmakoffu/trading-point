@@ -1,73 +1,80 @@
 <template>
     <div>
         <form class="shadow-md bg-white p-10" @submit.prevent="submit()">
-        <div class="space-y-12">
-            <div class="border-b border-gray-900/10 pb-12">
-            <h2 class="text-base font-semibold leading-7 text-gray-900">Submit Form</h2>
-            <p class="mt-1 text-sm leading-6 text-gray-600">Please note all fields are required.</p>
+            <div class="space-y-12">
+                <div class="border-b border-gray-900/10 pb-12">
+                <h2 class="text-base font-semibold leading-7 text-gray-900">Submit Form</h2>
+                <p class="mt-1 text-sm leading-6 text-gray-600">Please note all fields are required.</p>
 
-            <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-                <div class="sm:col-span-3">
+                <alert-component :alert="alert" />
 
-                <label for="company" class="block text-sm font-medium leading-6 text-gray-900">Company Symbol</label>
-                <div class="mt-2">
-                    <select id="company" name="company" autocomplete="company-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="data.company_symbol" required>
-                        <option disabled selected>Filter By Typing</option>
-                        <option v-for="company in companies" :key="company.id" :value="company.Symbol">{{ company.Symbol + ' - ' + company['Company Name']}}</option>
-                    </select>
+                <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                    <div class="sm:col-span-3">
 
-                    <error-message :errors="errors" v-if="errors.company_symbol" />
+                        <label for="company" class="block text-sm font-medium leading-6 text-gray-900">Company Symbol</label>
+                        <div class="mt-2">
+                            <select id="company" name="company" autocomplete="company-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="data.company_symbol" required>
+                                <option disabled selected>Filter By Typing</option>
+                                <option v-for="company in companies" :key="company.id" :value="company.Symbol">{{ company.Symbol + ' - ' + company['Company Name']}}</option>
+                            </select>
+
+                            <error-message :errors="errors.company_symbol" v-if="errors.company_symbol" />
+                        </div>
+
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
+                        <div class="mt-2">
+                            <input id="email" name="email" type="email" autocomplete="email" placeholder="Enter email address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="data.email" required>
+
+                            <error-message :errors="errors.email" v-if="errors.email" />
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="start-date" class="block text-sm font-medium leading-6 text-gray-900">Start Date</label>
+                        <div class="mt-2">
+                            <VueDatePicker v-model="data.start_date" :format="format" auto-apply  />
+
+                            <error-message :errors="errors.start_date" v-if="errors.start_date" />
+                        </div>
+                    </div>
+
+                    <div class="sm:col-span-3">
+                        <label for="end-date" class="block text-sm font-medium leading-6 text-gray-900">End Date</label>
+                        <div class="mt-2">
+                            <VueDatePicker v-model="data.end_date" :format="format" auto-apply  />
+
+                            <error-message :errors="errors.end_date" v-if="errors.end_date" />
+                        </div>
+                    </div>
+
+                    
                 </div>
-
                 </div>
-
-                <div class="sm:col-span-3">
-                <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email address</label>
-                <div class="mt-2">
-                    <input id="email" name="email" type="email" autocomplete="email" placeholder="Enter email address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" v-model="data.email" required>
-
-                    <error-message :errors="errors" v-if="errors.email" />
-                </div>
-                </div>
-
-                <div class="sm:col-span-3">
-                <label for="start-date" class="block text-sm font-medium leading-6 text-gray-900">Start Date</label>
-                <div class="mt-2">
-                    <VueDatePicker v-model="data.start_date" :format="format" :state="errors.start_date ? false : null" auto-apply  />
-
-                    <error-message :errors="errors" v-if="errors.start_date" />
-                </div>
-                </div>
-
-                <div class="sm:col-span-3">
-                <label for="end-date" class="block text-sm font-medium leading-6 text-gray-900">End Date</label>
-                <div class="mt-2">
-                    <VueDatePicker v-model="data.end_date" :format="format" :state="errors.end_date ? false : null" auto-apply  />
-
-                    <error-message :errors="errors" v-if="errors.end_date" />
-                </div>
-                </div>
-
-                
             </div>
-            </div>
-        </div>
 
-        <div class="mt-6 flex items-center justify-end gap-x-6">
-            <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
-            <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
-        </div>
+            <div class="mt-6 flex items-center justify-end gap-x-6">
+                <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
+            </div>
         </form>
 
         <section id="data" class="shadow-md bg-white p-10 mt-10">
             <tab-component 
                 :tabs="tabs"
+                :active_tab="tab"
                 @switchTab="switchTab" />
 
             <list-component 
                 :data="list_data"
+                :total="historical_data.length"
                 @updateData="updateData"
-                v-if="tab == 'Historical Data' || !historical_data.length" />
+                v-show="tab == 'Historical Data' && !list_data.length" />
+
+            <chart-component
+                :data="historical_data"
+                v-if="tab == 'Visual Data' && !list_data.length" />
 
         </section>
     </div>
@@ -79,6 +86,8 @@
     import ErrorMessage from '../components/ErrorMessage'
     import ListComponent from './ListComponent'
     import TabComponent from './TabComponent'
+    import AlertComponent from './AlertComponent'
+    import ChartComponent from './ChartComponent'
     import api from '../api'
 
     export default {
@@ -86,7 +95,9 @@
         components: {
             ErrorMessage,
             TabComponent,
-            ListComponent
+            ListComponent,
+            AlertComponent,
+            ChartComponent
         },
         data() {
             return {
@@ -1347,7 +1358,12 @@
                         "symbol": "AAPL"
                     }
                 ],
-                list_data: []
+                list_data: [],
+                alert: {
+                    loading: false,
+                    success: false,
+                    error: false
+                }
             }
         },
         computed: {
@@ -1357,23 +1373,28 @@
         },
         mounted() {
             this.fetchCompanies()
-            this.updateData({
-                page: 1,
-                size: 10
-            })
         },
         methods: {
             ...mapActions({
                 fetchCompanies: 'company/fetchCompanies'
             }),
             submit() {
-                alert('here')
+                this.alert.loading = true
+
                 api.post('/api/company', this.data)
                     .then(response => {
-                        console.log(response)
-                    })
-                    .catch(error => {
-                        this.errors = error.response.data.errors
+                        this.alert.loading = false
+                        this.setAlert(true, response.message)
+
+                        if(response.errors) {
+                            this.errors = response.errors
+                        } else {
+                            this.historical_data = response.data
+                            this.updateData({
+                                page: 1,
+                                size: 10
+                            })
+                        }
                     })
             },
             switchTab(tab) {
@@ -1382,6 +1403,17 @@
             updateData({page, size}) {
                 this.list_data = this.historical_data.slice((page - 1) * size, page * size);
                 console.log(this.list_data)
+            },
+            setAlert(state, message) {
+                if(state) {
+                    this.alert.error = false
+                    this.alert.success = true
+                } else {
+                    this.alert.error = true
+                    this.alert.success = false
+                }
+
+                this.alert.message = message
             }
         }
     }

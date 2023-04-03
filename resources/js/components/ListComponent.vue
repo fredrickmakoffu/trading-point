@@ -29,7 +29,7 @@
                 </tr>
             </thead>
             
-            <tbody v-if="data" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+            <tbody v-if="data && data.length" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                 <tr v-for="({date, open, high, low, close, volume}, index) in data" :key="index">
                     <td class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                         <div>
@@ -70,7 +70,7 @@
             </tbody>
 
 
-            <tbody v-if=" !data" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
+            <tbody v-if="data && !data.length" class="bg-white divide-y divide-gray-200 dark:divide-gray-700 dark:bg-gray-900">
                 <tr>
                     <td colspan="11" class="px-4 py-4 text-sm font-medium whitespace-nowrap">
                         <div>
@@ -83,7 +83,7 @@
 
         <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
           <div class="text-sm text-gray-500 dark:text-gray-400">
-              Page <span class="font-medium text-gray-700 dark:text-gray-100">{{ this.page }} out of {{ this.total_data }}</span> 
+              Page <span class="font-medium text-gray-700 dark:text-gray-100">{{ this.page }} out of {{ this.total }}</span> 
           </div>
 
           <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
@@ -120,7 +120,7 @@
                 required: true,
                 type: Array
             },
-            total_data: {
+            total: {
                 required: true,
                 type: Number
             }
