@@ -11,7 +11,7 @@ class CompanyController extends Controller
 {
     public function index(StoreRequest $request) : CompanyResource {
         $url = 'https://yh-finance-complete.p.rapidapi.com/yhfhistorical';
-
+        
         $response = Http::withHeaders([
                 'Content-Type' => 'application/json',
                 'Accept' => 'application/json',
