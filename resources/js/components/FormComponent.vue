@@ -1,6 +1,6 @@
 <template>
     <div>
-        <form class="shadow-md bg-white p-10" @submit="submit()">
+        <form class="shadow-md bg-white p-10" @submit.prevent="submit()">
         <div class="space-y-12">
             <div class="border-b border-gray-900/10 pb-12">
             <h2 class="text-base font-semibold leading-7 text-gray-900">Submit Form</h2>
@@ -65,7 +65,8 @@
                 @switchTab="switchTab" />
 
             <list-component 
-                :data="historical_data"
+                :data="list_data"
+                @updateData="updateData"
                 v-if="tab == 'Historical Data' || !historical_data.length" />
 
         </section>
@@ -96,10 +97,10 @@
                     end_date: ''
                 },
                 errors: {
-                    company_symbol: '',
-                    email: '',
-                    start_date: '',
-                    end_date: ''
+                    company_symbol: null,
+                    email: null,
+                    start_date: null,
+                    end_date: null
                 },
                 format: 'Y-MM-dd',
                 tabs: ['Historical Data', 'Visual Data'],
@@ -1345,7 +1346,8 @@
                         "volume": 104487900,
                         "symbol": "AAPL"
                     }
-                ]
+                ],
+                list_data: []
             }
         },
         computed: {
@@ -1355,12 +1357,17 @@
         },
         mounted() {
             this.fetchCompanies()
+            this.updateData({
+                page: 1,
+                size: 10
+            })
         },
         methods: {
             ...mapActions({
                 fetchCompanies: 'company/fetchCompanies'
             }),
             submit() {
+                alert('here')
                 api.post('/api/company', this.data)
                     .then(response => {
                         console.log(response)
@@ -1371,6 +1378,10 @@
             },
             switchTab(tab) {
                 this.tab = tab
+            },
+            updateData({page, size}) {
+                this.list_data = this.historical_data.slice((page - 1) * size, page * size);
+                console.log(this.list_data)
             }
         }
     }
