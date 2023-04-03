@@ -139,6 +139,9 @@
             }),
             submit() {
                 this.alert.loading = true
+                
+                // unset historical data
+                this.historical_data = []
 
                 api.post('/api/company', this.data)
                     .then(response => {
