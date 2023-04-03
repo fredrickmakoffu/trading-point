@@ -83,7 +83,7 @@
 
         <div class="mt-6 sm:flex sm:items-center sm:justify-between ">
           <div class="text-sm text-gray-500 dark:text-gray-400">
-              Page <span class="font-medium text-gray-700 dark:text-gray-100">{{ this.page }} out of {{ this.total }}</span> 
+              Page <span class="font-medium text-gray-700 dark:text-gray-100">{{ page }} out of {{ total % size }}</span> 
           </div>
 
           <div class="flex items-center mt-4 gap-x-4 sm:mt-0">
@@ -128,12 +128,9 @@
         data() {
             return {
                 page: 1,
-                size: 10
+                size: 25
             }
         },
-        // mounted() {
-        //     console.log(this.data)
-        // },
         methods: {
             previousPage() {
                 if (this.page > 1) {
