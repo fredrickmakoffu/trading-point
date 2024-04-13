@@ -1,69 +1,98 @@
-Prerequisites
--------------
+# Financial Dashboard
 
--   A server with Docker and Docker Compose installed
--   A domain name pointing to the server's IP address
+## Description
 
-## Step 1: Clone the Project
--------------------------
+The Financial Dashboard is a web application that retrieves and displays financial data from an open API. Users can view real-time stock prices, market trends, and other relevant financial information in a clean and intuitive interface.
 
-Clone your project to the server using the following command:
+## Why?
 
-`git clone <project-git-repo-url>`
+Accessing and analyzing financial data can be a daunting task for many individuals, especially those who are not familiar with the complexities of the financial markets. This project aims to simplify the process by providing a user-friendly dashboard that consolidates and presents the most important financial information in an easy-to-understand format.
 
-## Step 2: Set up your .env file
+## Prerequisites
 
-Only two modifications are required for the .env file, apart from its regular requirements: 
+- A server with Docker and Docker Compose installed
 
-Set up your RapidAPI credentials here, for example: 
+- A domain name pointing to the server's IP address
 
-`RAPIDAPI_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx`
-`RAPIDAPI_HOST=<your-host-file-here>`
+## Quick Start
 
-You should also put down your mailer credentials so that the project can send emails
+1\. Clone the repository:
 
-## Step 2: Build the Docker Images
--------------------------------
+```
 
-Navigate to the project directory and build the Docker images using the following command:
+git clone <project-git-repo-url>
 
-`docker-compose build`
+```
 
-## Step 3: Start the Docker Containers
------------------------------------
+2\. Set up your `.env` file:
 
-Start the Docker containers using the following command:
+   - Set up your RapidAPI credentials:
 
-`docker-compose up -d`
+     ```
+
+     RAPIDAPI_KEY=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+     RAPIDAPI_HOST=<your-host-file-here>
+
+     ```
+
+   - Add your mailer credentials so that the project can send emails.
+
+3\. Build the Docker images:
+
+```
+
+docker-compose build
+
+```
+
+4\. Start the Docker containers:
+
+```
+
+docker-compose up -d
+
+```
 
 The `-d` flag runs the containers in detached mode.
 
-## Step 4: Set Up Laravel
-----------------------
+5\. Set up Laravel:
 
-Enter the Laravel container using the following command:
-com
+   - Enter the Laravel container:
 
-`docker exec -it <container-name> /bin/bash`
+     ```
 
-Replace `<container-name>` with the name of your Laravel container.
+     docker exec -it <container-name> /bin/bash
 
-Navigate to the project directory and install the dependencies using the following commands:
+     ```
 
-`composer install`
+     Replace `<container-name>` with the name of your Laravel container.
 
-`npm install`
+   - Install the dependencies:
 
-Run the Laravel Mix build using the following command:
+     ```
 
-`npm run prod`
+     composer install
 
+     npm install
 
-## Step 7: Verify the Deployment
------------------------------
+     ```
 
-Visit your domain name in a web browser to verify that your Laravel project has been successfully deployed. Please note the Nginx configuration file is located in the `docker-compose/nginx`folder in the Laravel project. The project currently points to the `8080` port but you can update this if need be.
+   - Run the Laravel Mix build:
 
+     ```
 
-`http://localhost:8080`
+     npm run prod
 
+     ```
+
+6\. Verify the deployment:
+
+   Visit your domain name in a web browser to verify that your Laravel project has been successfully deployed. The project currently points to the `8080` port, but you can update this if needed.
+
+   ```
+
+   http://localhost:8080
+
+   ```
+   
